@@ -1,37 +1,24 @@
 # CRUD Task Management
 
-A full-stack Task Management application that allows users to create, view, update, delete, search, and filter tasks. The application stores task data in MongoDB.
+A simple full-stack task management application built using React, Node.js, Express.js, and MongoDB.
 
 ## Features
 
-- Create new tasks with a title and description
-- View all tasks in a clean dashboard
-- Edit existing tasks
-- Delete tasks with confirmation
-- Set task status: Pending, In Progress, or Completed
-- Set task priority: High, Medium, or Low
-- Add a due date to tasks
-- Search tasks by title
+- Add new tasks
+- View all tasks
+- Edit and delete tasks
+- Set task status and priority
+- Add due dates
+- Search tasks
 - Filter tasks by status and priority
-- View total, completed, and remaining task counts
-- Store tasks persistently in MongoDB
-- Responsive user interface
-- Form validation and error handling
+- View task summary on the dashboard
+- Store tasks in MongoDB
 
-## Tech Stack
+## Technologies Used
 
-**Frontend**
-- React
-- Vite
-- JavaScript
-- CSS
-- Axios
-
-**Backend**
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
+- **Frontend:** React, Vite, CSS, Axios
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB, Mongoose
 
 ## Project Structure
 
@@ -42,70 +29,53 @@ CRUD_Task_Management/
 │   │   └── Task.js
 │   ├── routes/
 │   │   └── taskRoutes.js
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js
+│   ├── server.js
+│   └── .env.example
 ├── frontend/
 │   ├── src/
+│   │   ├── components/
+│   │   │   └── Dashboard.jsx
 │   │   ├── App.jsx
 │   │   ├── App.css
 │   │   └── index.css
 │   └── package.json
-├── .gitignore
 └── README.md
 ```
 
-## Prerequisites
-
-Make sure the following are installed:
-
-- Node.js and npm
-- MongoDB Community Server, running locally, or an accessible MongoDB instance
-
 ## Installation and Setup
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/akshaydeshmukh12345/CRUD_Task_Management.git
 cd CRUD_Task_Management
 ```
 
-### 2. Set up the backend
+### 2. Start the Backend
 
 ```bash
 cd backend
 npm install
 ```
 
-Create a `.env` file inside the `backend` directory with the following variables:
+Create a `.env` file inside the `backend` folder:
 
 ```env
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/task_management
 ```
 
-Make sure MongoDB is running before starting the backend.
-
-Start the backend:
+Make sure MongoDB is running, then start the backend:
 
 ```bash
 npm start
 ```
 
-If the `start` script is not configured in `backend/package.json`, use the command supported by your project, such as:
+If `npm start` is not configured, run `node server.js` instead.
 
-```bash
-node server.js
-```
+### 3. Start the Frontend
 
-The API will run at:
-
-`http://localhost:5000`
-
-### 3. Set up the frontend
-
-Open a second terminal from the project root:
+Open a new terminal in the project folder and run:
 
 ```bash
 cd frontend
@@ -113,11 +83,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL displayed by Vite, usually:
-
-`http://localhost:5173`
-
-Keep both the backend and frontend running while using the application.
+Open the local URL displayed in the terminal.
 
 ## API Endpoints
 
@@ -125,43 +91,23 @@ Base URL: `http://localhost:5000/api/tasks`
 
 | Method | Endpoint | Description |
 |---|---|---|
+| GET | `/api/tasks` | Get all tasks |
+| GET | `/api/tasks/:id` | Get a task by ID |
 | POST | `/api/tasks` | Create a task |
-| GET | `/api/tasks` | Retrieve all tasks |
-| GET | `/api/tasks/:id` | Retrieve a task by ID |
 | PUT | `/api/tasks/:id` | Update a task |
 | DELETE | `/api/tasks/:id` | Delete a task |
 
-### Example Task
+## Task Status
 
-```json
-{
-  "title": "Complete assignment",
-  "description": "Finish the task management project",
-  "status": "Pending",
-  "priority": "High",
-  "dueDate": "2026-11-01"
-}
-```
+- Pending
+- In Progress
+- Completed
 
-Supported status values: `Pending`, `In Progress`, `Completed`
+## Task Priority
 
-Supported priority values: `High`, `Medium`, `Low`
-
-## Environment Variables
-
-| Variable | Description |
-|---|---|
-| `PORT` | Port used by the backend server |
-| `MONGO_URI` | MongoDB connection string |
-
-Use `.env.example` to document the required environment variables. Never commit your actual `.env` file, database credentials, or other secrets.
-
-## Future Improvements
-
-- Pagination and sorting
-- User authentication
-- User-specific task management
-- Improved task notifications
+- High
+- Medium
+- Low
 
 ## Author
 
