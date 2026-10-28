@@ -5,6 +5,7 @@ import axios from "axios";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [editingId, setEditingId] = useState(null);
 
   async function addTask() {
     if (title.trim() === "") return;
@@ -23,17 +24,63 @@ function App() {
     }
   }
 
+  async function deleteTask(id) {
+    try {
+      await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+
+      setTasks((previousTasks) =>
+        previousTasks.filter((task) => task._id !== id),
+      );
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  }
+
+  async function handleUpdate(id) {
+    if (title.trim() === "") return;
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/tasks/${id}`,
+        { title: title.trim() },
+      );
+
+      setTasks((previousTasks) =>
+        previousTasks.map((task) => (task._id === id ? response.data : task)),
+      );
+
+      setTitle("");
+      setEditingId(null);
+    } catch (error) {
+      console.log("Error updating task:", error.message);
+    }
+  }
   async function fetchTasks() {
     try {
       const response = await axios.get("http://localhost:5000/api/tasks");
-      setTasks(response.data);
+      return response.data;
     } catch (error) {
       console.error("Error fetching tasks:", error);
+      return [];
     }
   }
 
   useEffect(() => {
-    fetchTasks();
+    let ignore = false;
+
+    async function loadTasks() {
+      const data = await fetchTasks();
+
+      if (!ignore) {
+        setTasks(data);
+      }
+    }
+
+    loadTasks();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   return (
@@ -47,10 +94,30 @@ function App() {
         onChange={(event) => setTitle(event.target.value)}
       />
 
-      <button onClick={addTask}>Add Task</button>
-      <ul>
+      <button
+        onClick={() =>
+          editingId !== null ? handleUpdate(editingId) : addTask()
+        }
+      >
+        {editingId !== null ? "Save Changes" : "Add Task"}
+      </button>
+
+      <ul className="task-list">
         {tasks.map((task) => (
-          <li key={task.id}>{task.title}</li>
+          <li key={task._id}>
+            {task.title}
+
+            <button
+              onClick={() => {
+                setTitle(task.title);
+                setEditingId(task._id);
+              }}
+            >
+              Edit
+            </button>
+
+            <button onClick={() => deleteTask(task._id)}>Delete</button>
+          </li>
         ))}
       </ul>
       <p>Manage your daily tasks here.</p>
