@@ -1,3 +1,4 @@
+import "./App.css";
 import { useState, useEffect } from "react";
 
 import axios from "axios";
@@ -84,7 +85,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="app">
       <h1>Task Management</h1>
 
       <input
